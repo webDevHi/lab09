@@ -7,7 +7,7 @@ MyString::MyString(const char* str) {
             length++;
         }
         charArray = new char[length + 1];
-        for (int i = 0; i <= length; i++) {
+        for (size_t i = 0; i <= length; i++) {
             charArray[i] = str[i];
         }
     } else {
@@ -24,7 +24,7 @@ MyString::~MyString() {
 MyString::MyString(const MyString& other) {
     length = other.length;
     charArray = new char[length + 1];
-    for (int i = 0; i <= length; i++) {
+    for (size_t i = 0; i <= length; i++) {
         charArray[i] = other.charArray[i];
     }
 }
@@ -34,7 +34,7 @@ MyString& MyString::operator=(const MyString& other) {
         delete[] charArray;
         length = other.length;
         charArray = new char[length + 1];
-        for (int i = 0; i <= length; i++) {
+        for (size_t i = 0; i <= length; i++) {
             charArray[i] = other.charArray[i];
         }
     }
@@ -43,24 +43,24 @@ MyString& MyString::operator=(const MyString& other) {
 
 std::string MyString::toString() const {
     std::string result;
-    for (int i = 0; i < length; i++) {
+    for (size_t i = 0; i < length; i++) {
         result += charArray[i];
     }
     result += '\0';
     return result;
 }
 
-int MyString::getLength() const {
+size_t MyString::getLength() const {
     return length;
 }
 
-MyString MyString::substr(int start, int n) const {
+MyString MyString::substr(size_t start, size_t n) const {
     if (start >= length || start < 0) {
         return MyString("");
     }
-    int newLength = (n == SIZE_MAX) ? (length - start) : std::min(n, length - start);
+    size_t newLength = (n == SIZE_MAX) ? (length - start) : std::min(n, length - start);
     char* subStr = new char[newLength + 1];
-    for (int i = 0; i < newLength; i++) {
+    for (size_t i = 0; i < newLength; i++) {
         subStr[i] = charArray[start + i];
     }
     subStr[newLength] = '\0';
@@ -70,12 +70,12 @@ MyString MyString::substr(int start, int n) const {
 }
 
 MyString MyString::operator+(const MyString& other) const {
-    int newLength = length + other.length;
+    size_t newLength = length + other.length;
     char* newData = new char[newLength + 1];
-    for (int i = 0; i < length; i++) {
+    for (size_t i = 0; i < length; i++) {
         newData[i] = charArray[i];
     }
-    for (int j = 0; j <= other.length; j++) {
+    for (size_t j = 0; j <= other.length; j++) {
         newData[length + j] = other.charArray[j];
     }
     MyString result(newData);
@@ -84,8 +84,8 @@ MyString MyString::operator+(const MyString& other) const {
 }
 
 bool MyString::operator==(const MyString& other) const {
-    int minLength = length < other.length ? length : other.length;
-    for (int i = 0; i < minLength; i++) {
+    size_t minLength = length < other.length ? length : other.length;
+    for (size_t i = 0; i < minLength; i++) {
         if (charArray[i] != other.charArray[i]) {
             return false;
         }
@@ -98,8 +98,8 @@ bool MyString::operator!=(const MyString& other) const {
 }
 
 bool MyString::operator<(const MyString& other) const {
-    int minLength = length < other.length ? length : other.length;
-    for (int i = 0; i < minLength; i++) {
+    size_t minLength = length < other.length ? length : other.length;
+    for (size_t i = 0; i < minLength; i++) {
         if (charArray[i] != other.charArray[i]) {
             return charArray[i] < other.charArray[i];
         }
