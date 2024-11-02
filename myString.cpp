@@ -8,3 +8,16 @@ MyString::MyString(const char* str) {
             charArray[i] = str[i];
      };
 }
+
+MyString::~MyString() {
+    delete[] charArray;
+}
+
+MyString::MyString(const MyString& source) {
+    length = source.length; 
+    charArray = new char[length + 1];
+    for (int i = 0; i <= length; i++) {
+        charArray[i] = source.charArray[i];
+
+    }
+}
