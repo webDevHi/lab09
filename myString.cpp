@@ -29,7 +29,7 @@ MyString::MyString(const MyString& other) {
     }
 }
 
-MyString& MyString::operator=(const MyString& other) {
+MyString& MyString::operator=(const MyString& other)  noexcept {
     if (this != &other) {
         delete[] charArray;
         length = other.length;
