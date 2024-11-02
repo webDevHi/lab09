@@ -1,23 +1,124 @@
 #include "myString.h"
 
 MyString::MyString(const char* str) {
-    length = std::strlen(str);
-    charArray =  new char[length + 1];
-
+    if (str) {
+        length = 0;
+        while (str[length] != '\0') {
+            length++;
+        }
+        charArray = new char[length + 1];
         for (int i = 0; i <= length; i++) {
             charArray[i] = str[i];
-     };
+        }
+    } else {
+        length = 0;
+        charArray = new char[1];
+        charArray[0] = '\0';
+    }
 }
 
 MyString::~MyString() {
     delete[] charArray;
 }
 
-MyString::MyString(const MyString& source) {
-    length = source.length; 
+MyString::MyString(const MyString& other) {
+    length = other.length;
     charArray = new char[length + 1];
     for (int i = 0; i <= length; i++) {
-        charArray[i] = source.charArray[i];
-
+        charArray[i] = other.charArray[i];
     }
+}
+
+MyString& MyString::operator=(const MyString& other) {
+    if (this != &other) {
+        delete[] charArray;
+        length = other.length;
+        charArray = new char[length + 1];
+        for (int i = 0; i <= length; i++) {
+            charArray[i] = other.charArray[i];
+        }
+    }
+    return *this;
+}
+
+std::string MyString::toString() const {
+    std::string result;
+    for (int i = 0; i < length; i++) {
+        result += charArray[i];
+    }
+    result += '\0';
+    return result;
+}
+
+int MyString::getLength() const {
+    return length;
+}
+
+MyString MyString::substr(int start, int n) const {
+    if (start >= length || start < 0) {
+        return MyString("");
+    }
+    int newLength = (n == SIZE_MAX) ? (length - start) : std::min(n, length - start);
+    char* subStr = new char[newLength + 1];
+    for (int i = 0; i < newLength; i++) {
+        subStr[i] = charArray[start + i];
+    }
+    subStr[newLength] = '\0';
+    MyString result(subStr);
+    delete[] subStr;
+    return result;
+}
+
+MyString MyString::operator+(const MyString& other) const {
+    int newLength = length + other.length;
+    char* newData = new char[newLength + 1];
+    for (int i = 0; i < length; i++) {
+        newData[i] = charArray[i];
+    }
+    for (int j = 0; j <= other.length; j++) {
+        newData[length + j] = other.charArray[j];
+    }
+    MyString result(newData);
+    delete[] newData;
+    return result;
+}
+
+bool MyString::operator==(const MyString& other) const {
+    int minLength = length < other.length ? length : other.length;
+    for (int i = 0; i < minLength; i++) {
+        if (charArray[i] != other.charArray[i]) {
+            return false;
+        }
+    }
+    return length == other.length;
+}
+
+bool MyString::operator!=(const MyString& other) const {
+    return !(*this == other);
+}
+
+bool MyString::operator<(const MyString& other) const {
+    int minLength = length < other.length ? length : other.length;
+    for (int i = 0; i < minLength; i++) {
+        if (charArray[i] != other.charArray[i]) {
+            return charArray[i] < other.charArray[i];
+        }
+    }
+    return length < other.length;
+}
+
+bool MyString::operator<=(const MyString& other) const {
+    return *this < other || *this == other;
+}
+
+bool MyString::operator>(const MyString& other) const {
+    return !(*this <= other);
+}
+
+bool MyString::operator>=(const MyString& other) const {
+    return !(*this < other);
+}
+
+std::ostream& operator<<(std::ostream& os, const MyString& myStr) {
+    return os << myStr.charArray;
 }
