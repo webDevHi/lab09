@@ -46,7 +46,6 @@ std::string MyString::toString() const {
     for (size_t i = 0; i < length; i++) {
         result += charArray[i];
     }
-    result += '\0';
     return result;
 }
 
